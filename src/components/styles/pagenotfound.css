@@ -1,0 +1,8 @@
+.pagenotfound-main{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: black; */
+  height: 100%;
+  font-size: xx-large;
+}
