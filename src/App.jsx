@@ -9,11 +9,12 @@ import Profile from './components/routes/Profile';
 import Signup from './components/routes/Signup';
 
 function App() {
+
   return (
     <>
       <div>
 
-        <Navigation />
+        <Navigation pathname={window.location.pathname} />
         <div className="App">
           <Routes>
 
@@ -21,8 +22,8 @@ function App() {
         <Route path='/feed' element={<PrivateRoute>< Feed /></PrivateRoute>} /> */}
             <Route path='/' element={<Navigate to='/home' />} />
             <Route path='home' element={<Home />} />
-            <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
+            <Route path='/login' element={<Login />} />
             <Route path='/main' element={<Main />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/*' element={< Pagenotfound />} />
