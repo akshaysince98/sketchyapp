@@ -9,17 +9,19 @@
 
 .login-form {
   border: 2px solid aqua;
-  padding: 20px;
+  padding: 40px;
   border-radius: 50px;
 }
 
 .login-signupbtn {
+  font-size: small;
   color: white;
   text-decoration: none;
 }
 
 .login-signupbtn:hover {
   color: #7c629f;
+  text-decoration: underline;
 }
 
 .login-btn {
@@ -34,4 +36,16 @@
 .login-btn:hover {
   transform: scale(1.1);
   background-color: #4f2d7b;
+}
+
+.login-endtext {
+  font-size: small;
+  color: white;
+  opacity: 0.5;
+}
+
+.login-form>div>input {
+  width: 100%;
+  border-radius: 5px;
+  height: 40px;
 }

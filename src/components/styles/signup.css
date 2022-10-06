@@ -11,19 +11,22 @@
   border: 2px solid aqua;
   padding: 20px;
   border-radius: 50px;
+  padding: 40px;
 }
 
-.signup-name{
+.signup-name {
   display: flex;
 }
 
 .signup-loginbtn {
+  font-size: small;
   color: white;
   text-decoration: none;
 }
 
 .signup-loginbtn:hover {
   color: #7c629f;
+  text-decoration: underline;
 }
 
 .signup-btn {
@@ -38,4 +41,22 @@
 .signup-btn:hover {
   transform: scale(1.1);
   background-color: #4f2d7b;
+}
+
+.signup-form>div>input {
+  width: 100%;
+  border-radius: 5px;
+  height: 40px;
+}
+
+.signup-name>input {
+  width: 100%;
+  border-radius: 5px;
+  height: 40px;
+}
+
+.signup-endtext {
+  font-size: small;
+  color: white;
+  opacity: 0.5;
 }

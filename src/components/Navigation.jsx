@@ -4,8 +4,8 @@ import './styles/navigation.css'
 
 function Navigation(props) {
 
-  const path = props.pathname
 
+  let path = props.pathname
   console.log(path)
 
   return (
@@ -39,7 +39,7 @@ function Navigation(props) {
 
                   </>
                   :
-                  path == '/home' ?
+                  path == '/home' || path == '/' ?
                     <>
                       <a href="./signup" >Signup</a>
                       <a href="./login" >Login</a>

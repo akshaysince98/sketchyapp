@@ -16,10 +16,10 @@ function App() {
 
         <Navigation pathname={window.location.pathname} />
         <div className="App">
+
           <Routes>
 
-            {/* <Route path='/signup' element={<RedirectToFeed>< Signup /></RedirectToFeed>} />
-        <Route path='/feed' element={<PrivateRoute>< Feed /></PrivateRoute>} /> */}
+            {/* seems like a good idea to add another route where everyone can see all the sketches; users can decide whether to make their sketch public or private */}
             <Route path='/' element={<Navigate to='/home' />} />
             <Route path='home' element={<Home />} />
             <Route path='/signup' element={<Signup />} />
