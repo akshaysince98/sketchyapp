@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import '../styles/signup.css'
+import validator from 'email-validator'
+import axios from 'axios'
 
 function Signup() {
 
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [pass, setPass] = useState('')
   const [cpass, setCpass] = useState('')
@@ -12,47 +13,52 @@ function Signup() {
   // might not be useful let's see
   const [signupdata, setSignupdata] = useState({})
 
-  const signupclick = () => {
+  const signupclick = async () => {
     // have to give specific errors for each missing field
     // through alerts is one option, need to see how it works, hassle free work
     // through html div box is another idea, will work but will need css adjustments, doable but hassle
-    if (!firstName) {
+    if (!name) {
       return (alert('First name field cannot be empty!'))
     }
-
-    // lastname might not be a necessary field, will see about it later
-    // if (!lastName) {
-    //   return
-    // }
 
     // better to also validate email right here and then send to the backend
     // need to check how exactly emailvalidator works
     if (!email) {
       return (alert('Email field cannot be empty!'))
     }
+
+    if (!validator.validate(email)) {
+      return (alert('Enter valid email!'))
+    }
+
     if (!pass) {
       return (alert('Password field cannot be empty!'))
     }
-    
+
+    if (pass.length < 6) {
+      return (alert('Password too short'))
+    }
+
     if (!cpass) {
       return (alert('Confirm password field cannot be empty!'))
     }
-    
+
     // now i won't have to send the cpass to backend
     if (cpass != pass) {
       return (alert('Passwords are not same!'))
     }
 
     let newobj = {
-      firstName,
-      lastName,
+      name,
       email,
       pass
     }
 
-    console.log(newobj)
+    // console.log(newobj)
     // new obj is fine
     // just need to make a post request now
+    let response = await axios.post('/user/signup', newobj)
+    console.log(response)
 
   }
 
@@ -60,10 +66,9 @@ function Signup() {
     <div>
       <div className="signup-main">
         <div className="signup-form">
-          <div >Name</div>
-          <div className="signup-name">
-            <input type="text" placeholder="First name" onChange={(e) => setFirstName(e.target.value)} />
-            <input type="text" placeholder="Last name" onChange={(e) => setLastName(e.target.value)} />
+          <div >Full Name</div>
+          <div>
+            <input type="text" placeholder="Enter full name" onChange={(e) => setName(e.target.value)} />
           </div>
           <br />
           <div>Email address</div>
