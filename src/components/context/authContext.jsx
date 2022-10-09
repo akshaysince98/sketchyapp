@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import validator from 'email-validator'
 import axios from 'axios'
 
@@ -15,9 +15,22 @@ export const AuthProvider = ({ children }) => {
     __v: 0,
     _id: "63428fe45f7e632c84a0b807"
   }
-  const [user, setUser] = useState(x)
+  // const [user, setUser] = useState(x)
+  const [user, setUser] = useState(null)
 
   // functions
+
+  // useEffect(() => {
+  //   let userdata = localStorage.getItem("user");
+  //   userdata = JSON.parse(userdata)
+  //   if (!userdata) {
+  //     return
+  //   }
+  //   setUser(userdata)
+
+  // }, [])
+  // console.log(user)
+
 
   const signup = async (name, email, pass, cpass) => {
     // have to give specific errors for each missing field
@@ -54,7 +67,7 @@ export const AuthProvider = ({ children }) => {
       return (alert('Passwords are not same!'))
     }
 
-    let newobj = {
+    let obj = {
       name,
       email,
       pass
@@ -63,9 +76,37 @@ export const AuthProvider = ({ children }) => {
     // console.log(newobj)
     // new obj is fine
     // just need to make a post request now
-    let response = await axios.post('/user/signup', newobj)
+    let response = await axios.post('/user/signup', obj)
     console.log(response)
     setUser(response.data.data)
+    let res = JSON.stringify(response.data.data)
+
+    localStorage.setItem("user", res)
+
+  }
+
+  const login = async (email, pass) => {
+    if (!email) {
+      return (alert('Email field cannot be empty!'))
+    }
+    if (!pass) {
+      return (alert('Password field cannot be empty!'))
+    }
+
+    let obj = {
+      email,
+      pass
+    }
+
+    console.log(obj)
+
+    let response = await axios.post('/user/login', obj)
+    console.log(response)
+    setUser(response.data.data)
+
+    let res = JSON.stringify(response.data.data)
+
+    localStorage.setItem("user", res)
 
   }
 
@@ -73,7 +114,8 @@ export const AuthProvider = ({ children }) => {
   return (
     <authContext.Provider value={{
       user,
-      signup
+      signup,
+      login
     }
     }>
       {children}

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { db_link } from "../../secrets.js";
+import { db_link } from "../secrets.js";
+import bcrypt from 'bcrypt'
 
 mongoose.connect(db_link)
   .then(function (db) {

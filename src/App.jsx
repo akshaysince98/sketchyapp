@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { AuthProvider } from './components/context/authContext';
+import { AuthProvider, useAuth } from './components/context/authContext';
 import Navigation from './components/Navigation';
 import Home from './components/routes/Home';
 import Login from './components/routes/Login';
@@ -13,26 +14,26 @@ function App() {
 
   return (
     <>
-      <div>
-        <AuthProvider>
 
-          <Navigation pathname={window.location.pathname} />
-          <div className="App">
+      <AuthProvider>
 
-            <Routes>
+        <Navigation pathname={window.location.pathname} />
+        <div className="App">
 
-              {/* seems like a good idea to add another route where everyone can see all the sketches; users can decide whether to make their sketch public or private */}
-              <Route path='/' element={<Navigate to='/home' />} />
-              <Route path='home' element={<Home />} />
-              <Route path='/signup' element={<Signup />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/main' element={<Main />} />
-              <Route path='/profile' element={<Profile />} />
-              <Route path='/*' element={< Pagenotfound />} />
-            </Routes>
-          </div>
-        </AuthProvider>
-      </div>
+          <Routes>
+
+            {/* seems like a good idea to add another route where everyone can see all the sketches; users can decide whether to make their sketch public or private */}
+            <Route path='/' element={<Navigate to='/home' />} />
+            <Route path='/home' element={<Home />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/main' element={<Main />} />
+            <Route path='/profile' element={< Profile />} />
+            <Route path='/*' element={<Pagenotfound />} />
+          </Routes>
+        </div>
+      </AuthProvider>
+
     </>
   );
 }

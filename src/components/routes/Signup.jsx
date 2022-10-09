@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../styles/signup.css'
-
-import { useAuth } from '../context/authContext'
+import validator from 'email-validator'
+import axios from 'axios'
 
 function Signup() {
 
@@ -13,10 +13,55 @@ function Signup() {
   // might not be useful let's see
   // const [signupdata, setSignupdata] = useState({})
 
-  const {signup } = useAuth()
+  // const {signup } = useAuth()
 
-  const signupclick = () =>{
-    signup(name, email, pass, cpass)
+  const signupclick = async () => {
+    // have to give specific errors for each missing field
+    // through alerts is one option, need to see how it works, hassle free work
+    // through html div box is another idea, will work but will need css adjustments, doable but hassle
+    if (!name) {
+      return (alert('First name field cannot be empty!'))
+    }
+
+    // better to also validate email right here and then send to the backend
+    // need to check how exactly emailvalidator works
+    if (!email) {
+      return (alert('Email field cannot be empty!'))
+    }
+
+    if (!validator.validate(email)) {
+      return (alert('Enter valid email!'))
+    }
+
+    if (!pass) {
+      return (alert('Password field cannot be empty!'))
+    }
+
+    if (pass.length < 6) {
+      return (alert('Password too short'))
+    }
+
+    if (!cpass) {
+      return (alert('Confirm password field cannot be empty!'))
+    }
+
+    // now i won't have to send the cpass to backend
+    if (cpass != pass) {
+      return (alert('Passwords are not same!'))
+    }
+
+    let obj = {
+      name,
+      email,
+      pass
+    }
+
+    // console.log(newobj)
+    // new obj is fine
+    // just need to make a post request now
+    let response = await axios.post('/user/signup', obj)
+    console.log(response)
+    // setUser(response.data.data)
   }
 
   return (
