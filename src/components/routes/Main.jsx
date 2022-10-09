@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import '../styles/main.css'
 
 function Main() {
   const [isDrawing, setIsDrawing] = useState(false)
-  const [imgData, setImgData] = useState({})
+  const [sketchData, setSketchData] = useState('')
+  const [sketchName, setSketchName] = useState('')
+  const [createdBy, setCreatedBy] = useState('63431309f142fa46ebb7fa67')
+  const [collaborators, setCollaborators] = useState([])
   const canvasRef = useRef(null);
   const tool = useRef(null);
 
@@ -40,11 +43,6 @@ function Main() {
   const end = () => {
     tool.current.closePath();
     setIsDrawing(false);
-    // let img = canvasRef.current.getContext("2d").createImageData(window.innerWidth * 2, window.innerHeight * 2)
-    // console.log(img)
-    // let img = canvasRef.current.getContext("2d").getImageData(0, 0, window.innerWidth, window.innerHeight)
-    // console.log(img)
-    // setImgData(imgobje)
   };
 
   const drawing = (e) => {
@@ -61,11 +59,19 @@ function Main() {
     context.clearRect(0, 0, canvas.width, canvas.height)
   }
 
-  const imagedataupload = () => {
+  const imagedataupload = async () => {
     const canvas = canvasRef.current
-    // const context = canvas.getContext("2d")
     let uploadUrl = canvas.toDataURL()
-    console.log(uploadUrl)
+    // console.log(uploadUrl)
+    let sketchObj = {
+      sketchName,
+      sketchData: uploadUrl,
+      createdBy,
+      collaborators
+    }
+    let response = await axios.post('/sketch/uploadSketch', sketchObj)
+    console.log(response.data)
+
   }
 
   const setImage = () => {

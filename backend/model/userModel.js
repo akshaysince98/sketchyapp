@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { db_link } from "../secrets.js";
-import bcrypt from 'bcrypt'
 
 mongoose.connect(db_link)
   .then(function (db) {
@@ -23,7 +22,7 @@ const userSchema = mongoose.Schema({
   },
   contributions: [
     {
-      sName: {
+      sketchName: {
         type: String
       },
       color: {
@@ -33,7 +32,8 @@ const userSchema = mongoose.Schema({
     }
   ],
   lastOpened: {
-    type: String
+    type: String,
+    default: ""
   }
 })
 
