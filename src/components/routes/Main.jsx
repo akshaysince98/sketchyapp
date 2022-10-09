@@ -22,7 +22,8 @@ function Main() {
     context.lineCap = "round";
 
     // need to replace the color with variable that contains user specific color
-    context.strokeStyle = "black";
+    context.strokeStyle = "#000000";
+    // console.log(context.strokeStyle)
     context.lineWidth = 5;
     // console.log(context)
     tool.current = context;
