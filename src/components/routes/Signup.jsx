@@ -11,7 +11,7 @@ function Signup() {
   const [cpass, setCpass] = useState('')
 
   // might not be useful let's see
-  const [signupdata, setSignupdata] = useState({})
+  // const [signupdata, setSignupdata] = useState({})
 
   const signupclick = async () => {
     // have to give specific errors for each missing field

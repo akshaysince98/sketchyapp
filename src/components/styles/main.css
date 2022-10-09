@@ -1,0 +1,77 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  /* padding: 50px; */
+}
+
+.main-canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: white;
+}
+
+.main-actions {
+  display: flex;
+  justify-content: flex-end;
+  height: 100%;
+  width: 100%;
+  padding-right: 50px;
+  /* background-color: aqua; */
+  /* z-index: 2; */
+}
+
+.main-toolbar {
+  display: flex;
+  position: relative;
+  /* background-color: #7c629f; */
+  height: fit-content;
+}
+
+
+.main-toolbar * {
+  margin: 2px;
+  /* box-shadow: 0px 1px 3px #0000000d inset, 0px 0px 15px #011b23; */
+}
+
+.clear {
+  height: 40px;
+  height: fit-content;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  background-color: #011b23;
+  color: aqua;
+  justify-content: center;
+  align-content: center;
+}
+
+.clear:hover {
+  transform: scale(1.1);
+  background-color: #7c629f;
+  color: white;
+}
+
+/* .sketches {
+  position: relative;
+  height: 40px;
+  height: fit-content;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  background-color: #011b23;
+  color: aqua !important;
+} */
+
+/* .collaborators{
+  position: relative;
+  height: 40px;
+  height: fit-content;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  background-color: #011b23;
+  color: aqua;
+} */

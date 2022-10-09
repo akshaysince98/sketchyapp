@@ -19,6 +19,20 @@ const userSchema = mongoose.Schema({
   },
   pass: {
     type: String
+  },
+  contributions: [
+    {
+      sName: {
+        type: String
+      },
+      color: {
+        type: String
+      }
+
+    }
+  ],
+  lastOpened: {
+    type: String
   }
 })
 

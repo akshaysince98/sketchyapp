@@ -7,6 +7,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0px 30px;
+  
 }
 
 .navigation-parent>a {
@@ -15,6 +16,7 @@
   cursor: pointer;
   text-decoration: none;
   padding: 0px 10px;
+  z-index: 3;
 }
 
 .navigation-parent>a:hover {
@@ -25,11 +27,21 @@
 
 
 .navigation-actions>a {
-  color: aqua;
+  color: #7c629f;
   font-size: 25px;
   text-decoration: none;
   margin-left: 10px;
   padding: 2px;
+}
+
+.navigation-actions{
+  z-index: 3;
+  color: #7c629f;
+  font-size: 25px;
+  text-decoration: none;
+  margin-left: 10px;
+  padding: 2px;
+  /* background-color: #011b23; */
 }
 
 .navigation-actions>a:hover {

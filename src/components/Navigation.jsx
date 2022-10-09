@@ -3,8 +3,6 @@ import './styles/navigation.css'
 
 
 function Navigation(props) {
-
-
   let path = props.pathname
   console.log(path)
 
@@ -17,8 +15,8 @@ function Navigation(props) {
         {
           path == '/main' ?
             <>
-              <a href="./profile">Profile</a>
-              <a href="./login">Logout</a>
+                <a href="./profile">Profile</a>
+                <a href="./login">Logout</a>
             </>
             :
             path == '/profile' ?
