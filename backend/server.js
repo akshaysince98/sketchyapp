@@ -2,7 +2,6 @@ import express from "express"
 import { sketchRouter } from "./Routers/sketchRouter.js"
 import { userRouter } from './Routers/userRouter.js'
 
-
 const server = express()
 
 server.use(express.json())

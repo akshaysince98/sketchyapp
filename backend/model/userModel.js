@@ -22,6 +22,9 @@ const userSchema = mongoose.Schema({
   },
   contributions: [
     {
+      sketchId: {
+        type: mongoose.SchemaTypes.ObjectId
+      },
       sketchName: {
         type: String
       },
@@ -30,11 +33,7 @@ const userSchema = mongoose.Schema({
       }
 
     }
-  ],
-  lastOpened: {
-    type: String,
-    default: ""
-  }
+  ]
 })
 
 export const userModel = mongoose.model('userModel', userSchema)

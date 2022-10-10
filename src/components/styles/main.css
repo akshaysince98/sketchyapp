@@ -41,7 +41,7 @@
   height: fit-content;
   border-radius: 5px;
   border: none;
-  padding: 10px;
+  padding: 9px;
   background-color: #011b23;
   color: aqua;
   justify-content: center;
@@ -54,24 +54,93 @@
   color: white;
 }
 
-/* .sketches {
+.dropdown {
   position: relative;
-  height: 40px;
-  height: fit-content;
-  border-radius: 5px;
-  border: none;
-  padding: 10px;
-  background-color: #011b23;
-  color: aqua !important;
-} */
+  display: inline-block;
+}
 
-/* .collaborators{
-  position: relative;
-  height: 40px;
-  height: fit-content;
+.dropdown-togglebtn {
+  background-color: #011b23;
+  padding: 8px;
   border-radius: 5px;
-  border: none;
+}
+
+.dropdown-togglebtn:hover {
+  transform: scale(1.1);
+  background-color: #7c629f;
+  color: white;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px #011b23;
   padding: 10px;
+  z-index: 2;
+}
+
+.dropdown-content * {
+  border-radius: 5px;
   background-color: #011b23;
   color: aqua;
-} */
+  padding: 5px;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.dropdown-content *:hover {
+  transform: scale(1.1);
+  background-color: #7c629f;
+  border: none;
+  color: white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-newsketch {
+  background-color: aqua;
+  color: #011b23;
+}
+
+.main-modal {
+  background-color: #011b23;
+  position: fixed;
+  top: 20%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0px 8px 16px 0px #011b23;
+}
+
+.main-modal>input {
+  width: 100%;
+  border-radius: 5px;
+  padding: 4px;
+  margin-bottom: 10px;
+}
+
+.main-modal>button {
+  border-radius: 5px;
+  width: fit-content;
+  padding: 5px;
+  background-color: #7c629f;
+  color: white;
+  border: none;
+}
+
+.main-modal>button:hover {
+  transform: scale(1.1);
+  background-color: #4f2d7b;
+}

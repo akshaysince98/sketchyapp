@@ -22,3 +22,21 @@ export async function uploadSketch(req, res) {
     })
   }
 }
+
+export async function getAllSketches(req, res) {
+  try {
+    const allSketches = await sketchModel.find();
+
+    if (allSketches) {
+      res.json({
+        message: "All the sketches",
+        allSketchesData: allSketches
+      })
+    }
+
+  } catch (err) {
+    res.json({
+      message: err.message
+    })
+  }
+}

@@ -36,8 +36,8 @@ export async function signup(req, res) {
 
 export async function login(req, res) {
 
+  console.log("in login")
   try {
-
     let userObj = req.body
     let user = await userModel.findOne({ email: userObj.email })
 
@@ -68,9 +68,59 @@ export async function login(req, res) {
   }
 }
 
+export async function getUser(req, res) {
+  let id = req.params.id;
+  let user = await userModel.findById(id);
+
+  if (user) {
+    return res.json(user)
+  } else {
+    return res.json({
+      message: 'user not found'
+    })
+  }
+}
+
+export async function patchContribution(req, res) {
+  try {
+    let id = req.params.id
+    let dataTbu = req.body
+    let updatedUser = await userModel.findByIdAndUpdate(id,
+      {
+        $push: {
+          "contributions": {
+            sketchId: dataTbu.sketchId,
+            sketchName: dataTbu.sketchName,
+            color: dataTbu.color
+          }
+        }
+      }
+    )
+
+    if (updatedUser) {
+      res.json({
+        message: "Contribution added",
+        updatedUser
+      })
+    } else {
+      res.json({
+        message: "User not found"
+      })
+    }
+
+  } catch (err) {
+    res.json({
+      message: err.message
+    })
+  }
+}
+
+
+
 export function protectRoute(req, res, next) {
-let token;
-  if (req.cookies.login) {
+  let token;
+  console.log(req.cookie)
+  if (req.body.cookie.login) {
     token = req.cookies.login;
     let isVerified = jwt.verify(token, jwtkey);
     if (isVerified) {

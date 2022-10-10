@@ -17,13 +17,11 @@ const sketchSchema = mongoose.Schema({
   sketchData: {
     type: String
   },
-  createdBy: {
-    type: mongoose.Schema.ObjectId,
-    // type: String
-    ref: 'userModel',
-  },
   collaborators: [
     {
+      userId: {
+        type: mongoose.SchemaTypes.ObjectId
+      },
       name: {
         type: String
       },
