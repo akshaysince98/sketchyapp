@@ -14,7 +14,7 @@ function Profile() {
       try {
         let response = await axios.get('/user/notLoggedin')
         console.log(response.data.message);
-        window.location.assign("/login")
+        window.location.assign("/home")
       } catch (loggedin) {
         console.log('loggedin')
       }

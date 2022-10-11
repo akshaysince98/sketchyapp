@@ -34,13 +34,13 @@ function Navigation(props) {
           path == '/main' ?
             <>
               <a href="./profile">{name.split(' ')[0]}</a>
-              <a onClick={loggingout} href="./login">Logout</a>
+              <a onClick={loggingout} href="./home">Logout</a>
             </>
             :
             path == '/profile' ?
               <>
                 <a href="./main">Canvas</a>
-                <a onClick={loggingout} href="./login"  >Logout</a>
+                <a onClick={loggingout} href="./home" >Logout</a>
               </>
               :
               path == '/signup' ?

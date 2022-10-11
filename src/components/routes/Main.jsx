@@ -133,7 +133,7 @@ function Main() {
     setLoading(true)
     const canvas = canvasRef.current
     let uploadUrl = canvas.toDataURL()
-
+    console.log(uploadUrl)
     if (!saved) {
       let sketchObj = {
         sketchName,

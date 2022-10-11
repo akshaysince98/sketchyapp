@@ -76,7 +76,6 @@ export function logout(req, res) {
 
 export async function getUser(req, res, uid) {
   try {
-    console.log("bleh")
     let token = req.cookies.login;
     let uid = jwt.verify(token, jwtkey).payload
     let id = uid;
