@@ -1,5 +1,5 @@
 import express from "express";
-import { getUser, login, patchContribution, protectRoute, signup } from "../controller/userController.js";
+import { getUser, login, logout, patchContribution, protectRoute, signup } from "../controller/userController.js";
 import cookieParser from "cookie-parser"
 
 export const userRouter = express.Router();
@@ -23,3 +23,7 @@ userRouter
 userRouter
   .route('/patchContribution/:id')
   .patch(patchContribution)
+
+userRouter
+  .route('/logout')
+  .get(logout)

@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 import './styles/navigation.css'
 
@@ -5,6 +6,10 @@ import './styles/navigation.css'
 function Navigation(props) {
   let path = props.pathname
   console.log(path)
+
+  const loggingout = async() =>{
+    await axios.get('/user/logout')
+  }
 
   return (
     <div className='navigation-parent'>
@@ -16,13 +21,13 @@ function Navigation(props) {
           path == '/main' ?
             <>
                 <a href="./profile">Profile</a>
-                <a href="./login">Logout</a>
+                <a onClick={loggingout} href="./login">Logout</a>
             </>
             :
             path == '/profile' ?
               <>
                 <a href="./main">Canvas</a>
-                <a href="./login">Logout</a>
+                <a href="./login"  >Logout</a>
               </>
               :
               path == '/signup' ?

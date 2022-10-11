@@ -116,7 +116,12 @@ export async function patchContribution(req, res) {
   }
 }
 
-
+export function logout(req, res) {
+  res.cookie('login', ' ', { maxAge: 1 });
+  res.json({
+    message: "user logged out succesfully"
+  });
+}
 
 export function protectRoute(req, res, next) {
   let token;

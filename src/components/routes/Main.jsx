@@ -253,7 +253,7 @@ function Main() {
 
         </div>
         {
-          newSketch && 
+          newSketch &&
           <div className='main-modal-parent'>
             <div className="main-modal">
               New Sketch
