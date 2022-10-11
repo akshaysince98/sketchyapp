@@ -57,6 +57,7 @@
 .dropdown {
   position: relative;
   display: inline-block;
+  z-index: 2;
 }
 
 .dropdown-togglebtn {
@@ -105,16 +106,62 @@
   flex-direction: column;
 }
 
+.collabslist {
+  display: none;
+  position: absolute;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  width: 250px;
+  box-shadow: 0px 8px 16px 0px #011b23;
+  padding: 10px;
+  z-index: 2;
+}
+
+.collabslist * {
+  border-radius: 5px;
+  background-color: #011b23;
+  color: aqua;
+  padding: 5px;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+
+.collabslist *:hover {
+  transform: scale(1.1);
+  background-color: #7c629f;
+  border: none;
+  color: white;
+}
+
+.dropdown:hover .collabslist {
+  display: block;
+  display: flex;
+  flex-direction: column;
+}
+
+
 .main-newsketch {
   background-color: aqua;
   color: #011b23;
+}
+
+.main-modal-parent {
+  position: fixed;
+  /* background-color: aquamarine; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
 .main-modal {
   background-color: #011b23;
   position: fixed;
   top: 20%;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -143,4 +190,22 @@
 .main-modal>button:hover {
   transform: scale(1.1);
   background-color: #4f2d7b;
+}
+
+.main-loading {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 10vh;
+  background-color: #011b23;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.main-loading>div {
+  font-size: 50px;
+  opacity: 1;
 }

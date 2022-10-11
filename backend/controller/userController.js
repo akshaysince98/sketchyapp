@@ -85,7 +85,8 @@ export async function patchContribution(req, res) {
   try {
     let id = req.params.id
     let dataTbu = req.body
-    let updatedUser = await userModel.findByIdAndUpdate(id,
+    let updatedUser = await userModel.findByIdAndUpdate(
+      id,
       {
         $push: {
           "contributions": {

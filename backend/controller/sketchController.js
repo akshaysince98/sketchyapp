@@ -40,3 +40,39 @@ export async function getAllSketches(req, res) {
     })
   }
 }
+
+export async function patchCollaborator(req, res) {
+  try {
+    let id = req.params.id
+    let dataTbu = req.body
+    let updatedSketch = await sketchModel.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          "collaborators": {
+            userId: dataTbu.userId,
+            name: dataTbu.name,
+            color: dataTbu.color
+          }
+        }
+      }
+    )
+
+    if (updatedSketch) {
+      res.json({
+        message: "Collaborator added",
+        updatedSketch
+      })
+    } else {
+      res.json({
+        message: "Sketch not found"
+      })
+    }
+
+  } catch (err) {
+    res.json({
+      message: err.message
+    })
+  }
+
+}

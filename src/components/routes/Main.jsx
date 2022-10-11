@@ -4,11 +4,12 @@ import '../styles/main.css'
 
 function Main() {
 
-  let id = '63449ec5f4bbbd8e26555dda'
+  let id = '63449eb5f4bbbd8e26555dd8'
 
   const [loading, setLoading] = useState(false)
 
   const [userData, setUserData] = useState({})
+  const [sketchData, setSketchData] = useState({})
   const [sketchName, setSketchName] = useState('')
   const [sketchColor, setSketchColor] = useState('')
   const [collaborators, setCollaborators] = useState([])
@@ -119,12 +120,12 @@ function Main() {
   const setImage = (sketch) => {
     // I don't know why but works only after clicking the button twice
 
-    // console.log(sketch.collaborators)
-    // console.log(userData._id)
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d")
     context.clearRect(0, 0, canvas.width, canvas.height)
     setNewSketch(false)
+    setSketchData(sketch)
+
 
     const isCollaborator = sketch.collaborators.find((c) => {
       return c.userId == userData._id
@@ -139,6 +140,7 @@ function Main() {
 
     if (isCollaborator) {
       setnewOldSketch(false)
+      setSketchColor(isCollaborator.color)
     }
 
     let uri = sketch.sketchData
@@ -193,11 +195,49 @@ function Main() {
 
   }
 
-  const addAsCollaborator = () => {
-    
+  const addAsCollaborator = async () => {
+
+    if (!sketchColor) {
+      return alert("Please select a color")
+    }
+    if (
+      sketchData.collaborators.find((c) => {
+        return sketchColor == c.color
+      })
+    ) {
+      return alert("All collaborators must have unique colors. Please select another color.")
+    }
+
+    setLoading(true)
+    console.log(sketchData)
+
+    let sketchDataTbu = {
+      userId: id,
+      name,
+      color: sketchColor
+    }
+
+    console.log(sketchDataTbu)
+
+    let response = await axios.patch('/sketch/patchCollaborator/' + sketchData._id, sketchDataTbu)
+    console.log(response);
+
+
+    let userDataTbu = {
+      sketchId: sketchData._id,
+      sketchName: sketchData.sketchName,
+      color: sketchColor
+    }
+
+    await axios.patch('/user/patchContribution/' + id, userDataTbu)
+
+    setLoading(false)
+    setnewOldSketch(false)
+    setNewSketch(true)
   }
 
   // console.log(collaborators)
+  console.log(sketchData)
   return (
     <div>
       <div className='main'>
@@ -218,22 +258,16 @@ function Main() {
 
             <div className="dropdown">
               <div className='dropdown-togglebtn' >Collaborators</div>
-              <div className="dropdown-content">
-                <span>
+              <div className="collabslist">
+                {collabColors.map((c, i) => {
+                  return (
+                    <div key={i}>
+                      <span>{c} {collabNames[i]}</span>
+                    </div>
 
-                  {collabColors.map((c, i) => {
-                    return (
-                      <span key={i}>{c}</span>
-                    )
-                  })
-                  }
-                  {collabNames.map((c, i) => {
-                    return (
-                      <span key={i} >{c}</span>
-                    )
-                  })
-                  }
-                </span>
+                  )
+                })
+                }
               </div>
             </div>
             <button onClick={clear} className="clear">Clear</button>
@@ -243,23 +277,35 @@ function Main() {
         </div>
         {
           newSketch &&
-          <div className="main-modal">
-            New Sketch
-            <input onChange={(e) => { setSketchName(e.target.value) }} type="text" placeholder='Enter Sketch Name' />
-            <div>Select Your Stroke color</div><input onChange={(e) => { setSketchColor(e.target.value) }} type="color" />
-            <button onClick={namecolorSelection} >Done</button>
-            <br />
-            <div>Or open an existing sketch from above</div>
+          <div className='main-modal-parent'>
+            <div className="main-modal">
+              New Sketch
+              <input onChange={(e) => { setSketchName(e.target.value) }} type="text" placeholder='Enter Sketch Name' />
+              <div>Select Your Stroke color</div><input onChange={(e) => { setSketchColor(e.target.value) }} type="color" />
+              <button onClick={namecolorSelection} >Done</button>
+              <br />
+              <div>Or open an existing sketch from above</div>
+            </div>
           </div>
         }
 
         {
           newOldSketch &&
-          <div className="main-modal">
-            You are not a collaborator in this sketch
-            <div>Choose a color</div>
-            <input type="color" onChange={(e) => { setSketchColor(e.target.value) }} />
-            <button onClick={addAsCollaborator} >Add me as collaborator</button>
+
+          <div className='main-modal-parent'>
+            <div className="main-modal">
+              You are not a collaborator in this sketch
+              <div>Choose a color</div>
+              <input type="color" onChange={(e) => { setSketchColor(e.target.value) }} />
+              <button onClick={addAsCollaborator} >Add me as collaborator</button>
+            </div>
+          </div>
+
+        }
+        {
+          loading &&
+          <div className='main-loading' >
+            <div>Loading...</div>
           </div>
         }
       </div>
