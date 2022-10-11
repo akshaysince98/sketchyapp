@@ -76,3 +76,27 @@ export async function patchCollaborator(req, res) {
   }
 
 }
+
+export async function patchDatapng(req, res) {
+  try {
+    let id = req.params.id
+    let dataTbu = req.body
+    let updatedDatapng = await sketchModel.findByIdAndUpdate(
+      id,
+      { "sketchData": dataTbu.sketchData }
+    )
+    if (updatedDatapng) {
+      res.json({
+        message: "sketchData updadated",
+        updatedDatapng
+      })
+    } else {
+      res.json({
+        message: "Sketch not found"
+      })
+    }
+
+  } catch (err) {
+
+  }
+}

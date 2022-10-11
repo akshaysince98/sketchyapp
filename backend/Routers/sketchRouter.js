@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllSketches, patchCollaborator, uploadSketch } from '../controller/sketchController.js'
+import { getAllSketches, patchCollaborator, patchDatapng, uploadSketch } from '../controller/sketchController.js'
 
 export const sketchRouter = express.Router()
 
@@ -14,3 +14,7 @@ sketchRouter
 sketchRouter
   .route('/patchCollaborator/:id')
   .patch(patchCollaborator)
+
+  sketchRouter
+  .route('/patchDatapng/:id')
+  .patch(patchDatapng)

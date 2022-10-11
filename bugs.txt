@@ -2,3 +2,5 @@ Navigation -on start up, the Navigation action shows home instead of signup and 
 
 Signup and Login -buttons refresh the window, probably a bootstrap or a form thing (DONE)
                  -forms also have the input box issue of suggesting words, looks ugly and not very helpful, this is why i hate bootstrap, will have to change to normal html and css (DONE)
+
+canvas placement

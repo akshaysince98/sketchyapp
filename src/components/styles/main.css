@@ -57,7 +57,11 @@
 .dropdown {
   position: relative;
   display: inline-block;
+}
+
+.sketcheslist {
   z-index: 2;
+
 }
 
 .dropdown-togglebtn {

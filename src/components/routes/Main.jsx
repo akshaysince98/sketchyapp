@@ -7,24 +7,24 @@ function Main() {
   let id = '63449eb5f4bbbd8e26555dd8'
 
   const [loading, setLoading] = useState(false)
-
-  const [userData, setUserData] = useState({})
-  const [sketchData, setSketchData] = useState({})
-  const [sketchName, setSketchName] = useState('')
-  const [sketchColor, setSketchColor] = useState('')
-  const [collaborators, setCollaborators] = useState([])
-
-  const [name, setName] = useState('')
-
-  const [collabNames, setCollabNames] = useState([])
-  const [collabColors, setCollabColors] = useState([])
-  const [allSketches, setAllSketches] = useState([])
-  const [allSketchesNames, setAllSketchesNames] = useState([])
-
+  const [saved, setSaved] = useState(false)
+  const [isDrawing, setIsDrawing] = useState(false)
   const [newSketch, setNewSketch] = useState(true)
   const [newOldSketch, setnewOldSketch] = useState(false)
 
-  const [isDrawing, setIsDrawing] = useState(false)
+  const [name, setName] = useState('')
+  const [userData, setUserData] = useState({})
+  const [collabColors, setCollabColors] = useState([])
+  const [collaborators, setCollaborators] = useState([])
+  // const [collabNames, setCollabNames] = useState([])
+
+  const [sketchData, setSketchData] = useState({})
+  const [sketchName, setSketchName] = useState('')
+  const [sketchColor, setSketchColor] = useState('')
+  const [allSketches, setAllSketches] = useState([])
+  const [allSketchesNames, setAllSketchesNames] = useState([])
+
+
   const canvasRef = useRef(null);
   const tool = useRef(null);
 
@@ -97,35 +97,47 @@ function Main() {
     setLoading(true)
     const canvas = canvasRef.current
     let uploadUrl = canvas.toDataURL()
-    // console.log(uploadUrl)
-    let sketchObj = {
-      sketchName,
-      sketchData: uploadUrl,
-      collaborators
-    }
-    let response = await axios.post('/sketch/uploadSketch', sketchObj)
 
-    let dataTbu = {
-      sketchId: response.data.sketchData._id,
-      sketchName,
-      color: sketchColor
-    }
+    console.log(sketchData);
+    
+    if (!saved) {
+      // console.log(uploadUrl)
+      let sketchObj = {
+        sketchName,
+        sketchData: uploadUrl,
+        collaborators
+      }
+      let response = await axios.post('/sketch/uploadSketch', sketchObj)
 
-    let fixedData = await axios.patch('/user/patchContribution/' + id, dataTbu)
-    console.log(fixedData.data.updatedUser)
+      let dataTbu = {
+        sketchId: response.data.sketchData._id,
+        sketchName,
+        color: sketchColor
+      }
+
+      let fixedData = await axios.patch('/user/patchContribution/' + id, dataTbu)
+      console.log(response.data.message)
+    } else {
+      // sketchData
+      let sketchDataTbu = {
+        sketchData: uploadUrl
+      }
+      let response = await axios.patch('/sketch/patchDatapng/' + sketchData._id, sketchDataTbu)
+      console.log(response.data.message)
+
+    }
 
     setLoading(false)
   }
 
+  // I don't know why but works only after clicking the button twice
   const setImage = (sketch) => {
-    // I don't know why but works only after clicking the button twice
 
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d")
     context.clearRect(0, 0, canvas.width, canvas.height)
     setNewSketch(false)
     setSketchData(sketch)
-
 
     const isCollaborator = sketch.collaborators.find((c) => {
       return c.userId == userData._id
@@ -147,22 +159,15 @@ function Main() {
     let collabsArr = sketch.collaborators
 
     setCollaborators(collabsArr)
-    let names = collabsArr.map((c, i) => c.name)
-    setCollabNames(names)
+
     let colors = collabsArr.map((c, i) => c.color)
     setCollabColors(colors)
     setSketchName(sketch.sketchName)
 
-    // console.log(sketch._id)
-    // console.log(userData.contributions[0].sketchId);
-    // let contribution = userData.contributions.filter((c, i) => {      
-    //   return c.sketchId == sketch._id
-    // })
-    // setSketchColor(contribution[0].color)
-
     const img = new Image()
     img.src = uri
     context.drawImage(img, 100, 0, 500, 500)
+    setSaved(true)
   }
 
   const startNewSketch = () => {
@@ -172,6 +177,7 @@ function Main() {
     const context = canvas.getContext("2d")
     context.clearRect(0, 0, canvas.width, canvas.height)
     setNewSketch(true)
+    setSaved(false)
   }
 
   const namecolorSelection = () => {
@@ -237,7 +243,7 @@ function Main() {
   }
 
   // console.log(collaborators)
-  console.log(sketchData)
+  // console.log(sketchData)
   return (
     <div>
       <div className='main'>
@@ -246,7 +252,7 @@ function Main() {
         <div className='main-actions'>
           <div className="main-toolbar">
 
-            <div className="dropdown">
+            <div className="dropdown sketcheslist">
               <div className='dropdown-togglebtn'>Sketches</div>
               <div className="dropdown-content">
                 {allSketchesNames.map((s, i) => {
@@ -261,9 +267,8 @@ function Main() {
               <div className="collabslist">
                 {collabColors.map((c, i) => {
                   return (
-                    <div key={i}>
-                      <span>{c} {collabNames[i]}</span>
-                    </div>
+
+                    <span key={i} >{c} {collaborators[i].name}</span>
 
                   )
                 })
