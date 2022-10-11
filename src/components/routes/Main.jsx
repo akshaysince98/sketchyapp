@@ -24,27 +24,24 @@ function Main() {
   const [allSketches, setAllSketches] = useState([])
   const [allSketchesNames, setAllSketchesNames] = useState([])
 
-
   const canvasRef = useRef(null);
   const tool = useRef(null);
 
+  // setting canvas
   useEffect(() => {
-    // setting canvas
     const canvas = canvasRef.current
+    const context = canvas.getContext("2d")
+
     canvas.width = window.innerWidth * 2;
     canvas.height = window.innerHeight * 2;
     canvas.style.width = '100%';
     canvas.style.height = '100%';
 
-    const context = canvas.getContext("2d")
     context.scale(2, 2);
     context.lineCap = "round";
 
-    // need to replace the color with variable that contains user specific color
     context.strokeStyle = sketchColor;
-    // console.log(context.strokeStyle)
     context.lineWidth = 5;
-    // console.log(context)
     tool.current = context;
   }, [sketchColor])
 
@@ -53,7 +50,6 @@ function Main() {
     (async () => {
       let allSketchesArr = await axios.get('/sketch/getAllSketches')
       let user = await axios.get("/user/getUser/" + id)
-      // console.log(user.data)
       setUserData(user.data)
       setName(user.data.name)
       setAllSketches(allSketchesArr.data.allSketchesData)
@@ -66,19 +62,20 @@ function Main() {
 
   }, [loading])
 
-
-
+  // is triggered on mousedown, when the drawing starts
   const start = (e) => {
     tool.current.beginPath();
     tool.current.moveTo(e.clientX, e.clientY);
     setIsDrawing(true);
   };
 
+  // is triggered on mouseup, drawing ends
   const end = () => {
     tool.current.closePath();
     setIsDrawing(false);
   };
 
+  // mousemove, draws several small lines between very small displacement points of pointer
   const drawing = (e) => {
     if (!isDrawing) {
       return;
@@ -87,10 +84,41 @@ function Main() {
     tool.current.stroke();
   };
 
+  // clears the canvas
   const clear = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d")
     context.clearRect(0, 0, canvas.width, canvas.height)
+  }
+
+  // opens as you login
+  // you can either start a new sketch or just open an existing file
+  const startNewSketch = () => {
+    setSketchName('')
+    setSketchColor('')
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d")
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    setNewSketch(true)
+    setSaved(false)
+  }
+
+  const namecolorSelection = () => {
+    if (!sketchName) {
+      return alert("Please name the sketch")
+    }
+    if (!sketchColor) {
+      return alert("Please select a color")
+    }
+
+    let collabArr = []
+    collabArr.push({
+      userId: userData._id,
+      name,
+      color: sketchColor
+    })
+    setCollaborators(collabArr)
+    setNewSketch(false)
   }
 
   const imagedataupload = async () => {
@@ -98,10 +126,7 @@ function Main() {
     const canvas = canvasRef.current
     let uploadUrl = canvas.toDataURL()
 
-    console.log(sketchData);
-    
     if (!saved) {
-      // console.log(uploadUrl)
       let sketchObj = {
         sketchName,
         sketchData: uploadUrl,
@@ -118,20 +143,17 @@ function Main() {
       let fixedData = await axios.patch('/user/patchContribution/' + id, dataTbu)
       console.log(response.data.message)
     } else {
-      // sketchData
       let sketchDataTbu = {
         sketchData: uploadUrl
       }
       let response = await axios.patch('/sketch/patchDatapng/' + sketchData._id, sketchDataTbu)
-      console.log(response.data.message)
-
     }
 
     setLoading(false)
   }
 
   // I don't know why but works only after clicking the button twice
-  const setImage = (sketch) => {
+  const openSketch = (sketch) => {
 
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d")
@@ -142,8 +164,6 @@ function Main() {
     const isCollaborator = sketch.collaborators.find((c) => {
       return c.userId == userData._id
     })
-
-    console.log(isCollaborator);
 
     if (!isCollaborator) {
       setnewOldSketch(true)
@@ -170,52 +190,16 @@ function Main() {
     setSaved(true)
   }
 
-  const startNewSketch = () => {
-    setSketchName('')
-    setSketchColor('')
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d")
-    context.clearRect(0, 0, canvas.width, canvas.height)
-    setNewSketch(true)
-    setSaved(false)
-  }
-
-  const namecolorSelection = () => {
-    if (!sketchName) {
-      return alert("Please name the sketch")
-    }
-    if (!sketchColor) {
-      return alert("Please select a color")
-    }
-    let collabArr = []
-
-    collabArr.push({
-      userId: userData._id,
-      name,
-      color: sketchColor
-    })
-
-    setCollaborators(collabArr)
-
-    setNewSketch(false)
-
-  }
-
   const addAsCollaborator = async () => {
-
     if (!sketchColor) {
       return alert("Please select a color")
     }
-    if (
-      sketchData.collaborators.find((c) => {
-        return sketchColor == c.color
-      })
-    ) {
+    let colorExist = sketchData.collaborators.find((c) => { return sketchColor == c.color })
+    if (colorExist) {
       return alert("All collaborators must have unique colors. Please select another color.")
     }
 
     setLoading(true)
-    console.log(sketchData)
 
     let sketchDataTbu = {
       userId: id,
@@ -227,7 +211,6 @@ function Main() {
 
     let response = await axios.patch('/sketch/patchCollaborator/' + sketchData._id, sketchDataTbu)
     console.log(response);
-
 
     let userDataTbu = {
       sketchId: sketchData._id,
@@ -242,8 +225,6 @@ function Main() {
     setNewSketch(true)
   }
 
-  // console.log(collaborators)
-  // console.log(sketchData)
   return (
     <div>
       <div className='main'>
@@ -255,9 +236,7 @@ function Main() {
             <div className="dropdown sketcheslist">
               <div className='dropdown-togglebtn'>Sketches</div>
               <div className="dropdown-content">
-                {allSketchesNames.map((s, i) => {
-                  return <button key={i} onClick={() => setImage(allSketches[i])} >{s}</button>
-                })}
+                {allSketchesNames.map((s, i) => <button key={i} onClick={() => openSketch(allSketches[i])} >{s}</button>)}
                 <button className='main-newsketch' onClick={startNewSketch} >New Sketch</button>
               </div>
             </div>
@@ -265,14 +244,7 @@ function Main() {
             <div className="dropdown">
               <div className='dropdown-togglebtn' >Collaborators</div>
               <div className="collabslist">
-                {collabColors.map((c, i) => {
-                  return (
-
-                    <span key={i} >{c} {collaborators[i].name}</span>
-
-                  )
-                })
-                }
+                {collabColors.map((c, i) => <span key={i} >{c} {collaborators[i].name}</span>)}
               </div>
             </div>
             <button onClick={clear} className="clear">Clear</button>
@@ -281,7 +253,7 @@ function Main() {
 
         </div>
         {
-          newSketch &&
+          newSketch && 
           <div className='main-modal-parent'>
             <div className="main-modal">
               New Sketch
