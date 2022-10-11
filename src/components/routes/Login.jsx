@@ -1,13 +1,29 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../styles/login.css'
 
 function Login() {
 
   const [email, setEmail] = useState('')
   const [pass, setPass] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    (async () => {
+      try {
+        let response = await axios.get('/user/notLoggedin')
+        console.log(response.data.message);
+      } catch (loggedin) {
+        window.location.assign("/main")
+        console.log('loggedin')
+      }
+    })()
+  }, [loading])
+
 
   const loginclick = async() => {
+    
+    setLoading(true)
     if (!email) {
       return (alert('Email field cannot be empty!'))
     }
@@ -19,10 +35,10 @@ function Login() {
       email,
       pass
     }
-
     let response = await axios.post('/user/login', obj)
-    console.log(response.data.data)
-    // setUser(response.data.data)
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000);
   }
 
   return (
@@ -48,6 +64,12 @@ function Login() {
           <br />
           <button className="login-btn" onClick={loginclick} >Login</button>
         </div>
+        {
+          loading &&
+          <div className='main-loading' >
+            <div>Loading...</div>
+          </div>
+        }
       </div>
     </div >
   )

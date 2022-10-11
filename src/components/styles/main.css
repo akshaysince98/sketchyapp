@@ -46,6 +46,7 @@
   color: aqua;
   justify-content: center;
   align-content: center;
+  margin-top: 5px;
 }
 
 .clear:hover {
@@ -61,7 +62,6 @@
 
 .sketcheslist {
   z-index: 2;
-
 }
 
 .dropdown-togglebtn {
@@ -153,7 +153,8 @@
 
 .main-modal-parent {
   position: fixed;
-  /* background-color: aquamarine; */
+  top: 10vh;
+  background-color: #011b238e;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -201,8 +202,7 @@
   height: 100%;
   position: fixed;
   top: 10vh;
-  background-color: #011b23;
-  opacity: 0.7;
+  background-color: #011b238e;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -211,5 +211,4 @@
 
 .main-loading>div {
   font-size: 50px;
-  opacity: 1;
 }

@@ -1,13 +1,26 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './styles/navigation.css'
 
 
 function Navigation(props) {
+
+  const [name, setName] = useState('')
+
+  useEffect(() => {
+
+    (async () => {
+      let user = await axios.get("/user/getUser")
+      setName(user.data.name)
+    })()
+
+  }, [])
+
+
   let path = props.pathname
   console.log(path)
 
-  const loggingout = async() =>{
+  const loggingout = async () => {
     await axios.get('/user/logout')
   }
 
@@ -20,14 +33,14 @@ function Navigation(props) {
         {
           path == '/main' ?
             <>
-                <a href="./profile">Profile</a>
-                <a onClick={loggingout} href="./login">Logout</a>
+              <a href="./profile">{name.split(' ')[0]}</a>
+              <a onClick={loggingout} href="./login">Logout</a>
             </>
             :
             path == '/profile' ?
               <>
                 <a href="./main">Canvas</a>
-                <a href="./login"  >Logout</a>
+                <a onClick={loggingout} href="./login"  >Logout</a>
               </>
               :
               path == '/signup' ?

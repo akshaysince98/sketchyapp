@@ -4,14 +4,13 @@ import '../styles/main.css'
 
 function Main() {
 
-  let id = '63449eb5f4bbbd8e26555dd8'
-
   const [loading, setLoading] = useState(false)
   const [saved, setSaved] = useState(false)
   const [isDrawing, setIsDrawing] = useState(false)
   const [newSketch, setNewSketch] = useState(true)
   const [newOldSketch, setnewOldSketch] = useState(false)
 
+  const [id, setId] = useState('')
   const [name, setName] = useState('')
   const [userData, setUserData] = useState({})
   const [collabColors, setCollabColors] = useState([])
@@ -26,6 +25,7 @@ function Main() {
 
   const canvasRef = useRef(null);
   const tool = useRef(null);
+
 
   // setting canvas
   useEffect(() => {
@@ -49,15 +49,23 @@ function Main() {
 
     (async () => {
       let allSketchesArr = await axios.get('/sketch/getAllSketches')
-      let user = await axios.get("/user/getUser/" + id)
+      let user = await axios.get("/user/getUser")
       setUserData(user.data)
       setName(user.data.name)
+      setId(user._id)
       setAllSketches(allSketchesArr.data.allSketchesData)
 
       let namearr = allSketchesArr.data.allSketchesData.map((s, i) => {
         return s.sketchName
       })
       setAllSketchesNames(namearr)
+
+      try {
+        let response = await axios.get('/user/notLoggedin')
+        window.location.assign("/home")
+      } catch (loggedin) {
+        console.log('loggedin')
+      }
     })()
 
   }, [loading])

@@ -36,7 +36,6 @@ export async function signup(req, res) {
 
 export async function login(req, res) {
 
-  console.log("in login")
   try {
     let userObj = req.body
     let user = await userModel.findOne({ email: userObj.email })
@@ -68,15 +67,31 @@ export async function login(req, res) {
   }
 }
 
-export async function getUser(req, res) {
-  let id = req.params.id;
-  let user = await userModel.findById(id);
+export function logout(req, res) {
+  res.cookie('login', ' ', { maxAge: 1 });
+  res.json({
+    message: "user logged out succesfully"
+  });
+}
 
-  if (user) {
-    return res.json(user)
-  } else {
-    return res.json({
-      message: 'user not found'
+export async function getUser(req, res, uid) {
+  try {
+    console.log("bleh")
+    let token = req.cookies.login;
+    let uid = jwt.verify(token, jwtkey).payload
+    let id = uid;
+    let user = await userModel.findById(id);
+
+    if (user) {
+      return res.json(user)
+    } else {
+      return res.json({
+        message: 'user not found'
+      })
+    }
+  } catch (err) {
+    res.json({
+      message: err
     })
   }
 }
@@ -116,19 +131,12 @@ export async function patchContribution(req, res) {
   }
 }
 
-export function logout(req, res) {
-  res.cookie('login', ' ', { maxAge: 1 });
-  res.json({
-    message: "user logged out succesfully"
-  });
-}
-
 export function protectRoute(req, res, next) {
   let token;
-  console.log(req.cookie)
-  if (req.body.cookie.login) {
+  if (req.cookies.login) {
     token = req.cookies.login;
     let isVerified = jwt.verify(token, jwtkey);
+    // console.log(isVerified.payload)
     if (isVerified) {
       next();
     } else {

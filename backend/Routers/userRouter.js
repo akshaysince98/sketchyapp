@@ -1,9 +1,7 @@
 import express from "express";
 import { getUser, login, logout, patchContribution, protectRoute, signup } from "../controller/userController.js";
-import cookieParser from "cookie-parser"
 
 export const userRouter = express.Router();
-
 
 userRouter
   .route('/signup')
@@ -14,16 +12,17 @@ userRouter
   .post(login)
 
 userRouter
-  .route('/getUser/:id')
-  .get(getUser)
+  .route('/logout')
+  .get(logout)
 
-// userRouter.use(cookieParser)
-// userRouter.use(protectRoute)
-// userRouter.use(express.json())
 userRouter
   .route('/patchContribution/:id')
   .patch(patchContribution)
 
+userRouter.use(protectRoute)
 userRouter
-  .route('/logout')
-  .get(logout)
+  .route('/getUser')
+  .get(getUser)
+
+userRouter
+  .route('/notLoggedin')
