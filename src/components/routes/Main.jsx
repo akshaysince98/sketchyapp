@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import '../styles/main.css'
 
 function Main() {
-
   const [loading, setLoading] = useState(false)
   const [saved, setSaved] = useState(false)
   const [isDrawing, setIsDrawing] = useState(false)
@@ -23,33 +22,34 @@ function Main() {
   const [allSketches, setAllSketches] = useState([])
   const [allSketchesNames, setAllSketchesNames] = useState([])
 
+  const [windowDimension, setWindowDimension] = useState(window.innerHeight * window.innerWidth)
+  
+  // called on window size change, 
+  const detectSize = () => {
+    setWindowDimension(window.innerHeight * window.innerWidth)
+  }
+  
   const canvasRef = useRef(null);
   const tool = useRef(null);
 
-  console.log(window.innerHeight, window.innerWidth)
-
   // setting canvas
   useEffect(() => {
-    console.log("running")
+    window.addEventListener('resize', detectSize)
+
     const canvas = canvasRef.current
     const context = canvas.getContext("2d")
 
     canvas.width = window.innerWidth * 2;
     canvas.height = window.innerHeight * 2;
-    // canvas.style.width = '100%';
-    // canvas.style.height = '100%';
-    
     canvas.style.width = `${window.innerWidth}px`;
     canvas.style.height = `${window.innerHeight}px`;
-    
-
     context.scale(2, 2);
     context.lineCap = "round";
-
     context.strokeStyle = sketchColor;
     context.lineWidth = 5;
     tool.current = context;
-  }, [sketchColor])
+
+  }, [sketchColor, windowDimension])
 
   useEffect(() => {
 
@@ -245,7 +245,7 @@ function Main() {
 
   return (
     <div>
-      <div className='main'>
+      <div className='main' on >
 
         <canvas onMouseDown={start} onMouseUp={end} onMouseMove={drawing} ref={canvasRef} className='main-canvas' ></canvas>
         <div className='main-actions'>
