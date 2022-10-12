@@ -23,12 +23,12 @@ function Main() {
   const [allSketchesNames, setAllSketchesNames] = useState([])
 
   const [windowDimension, setWindowDimension] = useState(window.innerHeight * window.innerWidth)
-  
+
   // called on window size change, 
   const detectSize = () => {
     setWindowDimension(window.innerHeight * window.innerWidth)
   }
-  
+
   const canvasRef = useRef(null);
   const tool = useRef(null);
 
@@ -204,7 +204,7 @@ function Main() {
 
     const img = new Image()
     img.src = uri
-    context.drawImage(img, 0, 0, sketch.sketchWidth, sketch.sketchWidth)
+    context.drawImage(img, 0, 0, sketch.sketchWidth, sketch.sketchHeight)
     setSaved(true)
   }
 

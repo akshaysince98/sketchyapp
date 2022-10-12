@@ -5,7 +5,6 @@ import { sketchModel } from "../model/sketchModel.js";
 export async function uploadSketch(req, res) {
   try {
     let sketchObj = req.body
-    console.log(sketchObj)
     let sketch = await sketchModel.create(sketchObj)
     if (sketch) {
       res.json({

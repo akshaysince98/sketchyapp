@@ -72,8 +72,6 @@ function Signup() {
     // new obj is fine
     // just need to make a post request now
     let response = await axios.post('/user/signup', obj)
-    console.log(response)
-    // setUser(response.data.data)
 
     setTimeout(() => {
       setLoading(false)
