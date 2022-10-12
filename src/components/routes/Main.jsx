@@ -34,8 +34,11 @@ function Main() {
 
     canvas.width = window.innerWidth * 2;
     canvas.height = window.innerHeight * 2;
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
+    // canvas.style.width = '100%';
+    // canvas.style.height = '100%';
+
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
 
     context.scale(2, 2);
     context.lineCap = "round";
@@ -52,7 +55,7 @@ function Main() {
       let user = await axios.get("/user/getUser")
       setUserData(user.data)
       setName(user.data.name)
-      setId(user._id)
+      setId(user.data._id)
       setAllSketches(allSketchesArr.data.allSketchesData)
 
       let namearr = allSketchesArr.data.allSketchesData.map((s, i) => {
@@ -232,6 +235,8 @@ function Main() {
     setnewOldSketch(false)
     setNewSketch(true)
   }
+
+  console.log(id)
 
   return (
     <div>
