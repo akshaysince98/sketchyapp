@@ -26,9 +26,11 @@ function Main() {
   const canvasRef = useRef(null);
   const tool = useRef(null);
 
+  console.log(window.innerHeight, window.innerWidth)
 
   // setting canvas
   useEffect(() => {
+    console.log("running")
     const canvas = canvasRef.current
     const context = canvas.getContext("2d")
 
@@ -36,9 +38,10 @@ function Main() {
     canvas.height = window.innerHeight * 2;
     // canvas.style.width = '100%';
     // canvas.style.height = '100%';
-
+    
     canvas.style.width = `${window.innerWidth}px`;
     canvas.style.height = `${window.innerHeight}px`;
+    
 
     context.scale(2, 2);
     context.lineCap = "round";
@@ -67,7 +70,7 @@ function Main() {
         let response = await axios.get('/user/notLoggedin')
         window.location.assign("/home")
       } catch (loggedin) {
-        console.log('loggedin')
+        console.log('notloggedin')
       }
     })()
 
@@ -136,13 +139,16 @@ function Main() {
     setLoading(true)
     const canvas = canvasRef.current
     let uploadUrl = canvas.toDataURL()
-    console.log(uploadUrl)
     if (!saved) {
       let sketchObj = {
         sketchName,
         sketchData: uploadUrl,
-        collaborators
+        collaborators,
+        sketchWidth: window.innerWidth,
+        sketchHeight: window.innerHeight
       }
+
+      console.log(sketchObj)
       let response = await axios.post('/sketch/uploadSketch', sketchObj)
 
       let dataTbu = {
@@ -155,9 +161,11 @@ function Main() {
       console.log(response.data.message)
     } else {
       let sketchDataTbu = {
-        sketchData: uploadUrl
+        sketchData: uploadUrl,
+        sketchWidth: window.innerWidth,
+        sketchHeight: window.innerHeight
       }
-      let response = await axios.patch('/sketch/patchDatapng/' + sketchData._id, sketchDataTbu)
+      let response = await axios.patch('/sketch/patchDataHeightWidth/' + sketchData._id, sketchDataTbu)
     }
 
     setLoading(false)
@@ -165,7 +173,6 @@ function Main() {
 
   // I don't know why but works only after clicking the button twice
   const openSketch = (sketch) => {
-
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d")
     context.clearRect(0, 0, canvas.width, canvas.height)
@@ -197,7 +204,7 @@ function Main() {
 
     const img = new Image()
     img.src = uri
-    context.drawImage(img, 100, 0, 500, 500)
+    context.drawImage(img, 0, 0, sketch.sketchWidth, sketch.sketchWidth)
     setSaved(true)
   }
 
@@ -235,8 +242,6 @@ function Main() {
     setnewOldSketch(false)
     setNewSketch(true)
   }
-
-  console.log(id)
 
   return (
     <div>

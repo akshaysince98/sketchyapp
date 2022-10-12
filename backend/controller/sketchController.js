@@ -5,6 +5,7 @@ import { sketchModel } from "../model/sketchModel.js";
 export async function uploadSketch(req, res) {
   try {
     let sketchObj = req.body
+    console.log(sketchObj)
     let sketch = await sketchModel.create(sketchObj)
     if (sketch) {
       res.json({
@@ -77,13 +78,17 @@ export async function patchCollaborator(req, res) {
 
 }
 
-export async function patchDatapng(req, res) {
+export async function patchDataHeightWidth(req, res) {
   try {
     let id = req.params.id
     let dataTbu = req.body
     let updatedDatapng = await sketchModel.findByIdAndUpdate(
       id,
-      { "sketchData": dataTbu.sketchData }
+      {
+        "sketchData": dataTbu.sketchData,
+        "sketchWidth": dataTbu.sketchWidth,
+        "sketchHeight": dataTbu.sketchHeight
+      }
     )
     if (updatedDatapng) {
       res.json({

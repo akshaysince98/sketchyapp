@@ -9,7 +9,7 @@ function Home() {
 
       try {
         let response = await axios.get('/user/notLoggedin')
-        console.log(response.data.message);
+        console.log("notloggedin");
       } catch (loggedin) {
         console.log('loggedin')
         window.location.assign("/main")

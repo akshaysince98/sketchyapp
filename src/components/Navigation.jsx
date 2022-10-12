@@ -11,18 +11,17 @@ function Navigation(props) {
 
     (async () => {
       let user = await axios.get("/user/getUser")
-      setName(user.data.name)
+      if (user.data.name) {
+        setName(user.data.name)
+      }
     })()
 
   }, [])
 
-
-  let path = props.pathname
-  console.log(path)
-
   const loggingout = async () => {
     await axios.get('/user/logout')
   }
+  let path = props.pathname
 
   return (
     <div className='navigation-parent'>

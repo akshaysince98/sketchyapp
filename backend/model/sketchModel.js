@@ -29,7 +29,13 @@ const sketchSchema = mongoose.Schema({
         type: String
       }
     }
-  ]
+  ],
+  sketchWidth: {
+    type: Number
+  },
+  sketchHeight: {
+    type: Number
+  }
 })
 
 export const sketchModel = mongoose.model('sketchModel', sketchSchema)
