@@ -23,7 +23,6 @@ function Login() {
 
   const loginclick = async() => {
     
-    setLoading(true)
     if (!email) {
       return (alert('Email field cannot be empty!'))
     }
@@ -31,6 +30,7 @@ function Login() {
       return (alert('Password field cannot be empty!'))
     }
 
+    setLoading(true)
     let obj = {
       email,
       pass

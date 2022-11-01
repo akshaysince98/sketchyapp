@@ -25,9 +25,6 @@ function Signup() {
 
   const signupclick = async () => {
 
-    setLoading(true)
-
-
     // have to give specific errors for each missing field
     // through alerts is one option, need to see how it works, hassle free work
     // through html div box is another idea, will work but will need css adjustments, doable but hassle
@@ -61,6 +58,8 @@ function Signup() {
     if (cpass != pass) {
       return (alert('Passwords are not same!'))
     }
+
+    setLoading(true)
 
     let obj = {
       name,
