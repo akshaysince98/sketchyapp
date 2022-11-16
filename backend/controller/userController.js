@@ -1,132 +1,126 @@
 import { userModel } from "../model/userModel.js";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { jwtkey, salt } from "../secrets.js";
 
 export async function signup(req, res) {
   try {
-    let userObj = req.body
+    let userObj = req.body;
 
     bcrypt.genSalt(salt, async function (err, salt) {
       bcrypt.hash(userObj.pass, salt, async function (err, hash) {
-
-        userObj.pass = hash
-        let user = await userModel.create(userObj)
+        userObj.pass = hash;
+        let user = await userModel.create(userObj);
         if (user) {
-          let uid = user._id
-          let token = jwt.sign({ payload: uid }, jwtkey)
-          res.cookie('login', token, { httpOnly: true })
+          let uid = user._id;
+          let token = jwt.sign({ payload: uid }, jwtkey);
+          res.cookie("login", token, { httpOnly: true });
           res.json({
             message: "user signed up",
-            data: user
-          })
+            data: user,
+          });
         } else {
           res.json({
-            message: "error while signing up"
-          })
+            message: "error while signing up",
+          });
         }
-      })
-    })
+      });
+    });
   } catch (err) {
     res.json({
-      message: err.message
-    })
+      message: err.message,
+    });
   }
 }
 
 export async function login(req, res) {
-
   try {
-    let userObj = req.body
-    let user = await userModel.findOne({ email: userObj.email })
+    let userObj = req.body;
+    let user = await userModel.findOne({ email: userObj.email });
 
     if (user) {
-      let passcheck = await bcrypt.compare(userObj.pass, user.pass)
+      let passcheck = await bcrypt.compare(userObj.pass, user.pass);
       if (passcheck) {
-        let uid = user._id
-        let token = jwt.sign({ payload: uid }, jwtkey)
-        res.cookie('login', token, { httpOnly: true })
+        let uid = user._id;
+        let token = jwt.sign({ payload: uid }, jwtkey);
+        res.cookie("login", token, { httpOnly: true });
         res.json({
           message: "user logged in",
-          data: user
-        })
+          data: user,
+        });
       } else {
         res.json({
-          message: "Wrong password"
-        })
+          message: "Wrong password",
+        });
       }
     } else {
       res.json({
-        message: "User not found"
-      })
+        message: "User not found",
+      });
     }
   } catch (err) {
     res.json({
-      message: err.message
-    })
+      message: err.message,
+    });
   }
 }
 
 export function logout(req, res) {
-  res.cookie('login', ' ', { maxAge: 1 });
+  res.cookie("login", " ", { maxAge: 1 });
   res.json({
-    message: "user logged out succesfully"
+    message: "user logged out succesfully",
   });
 }
 
 export async function getUser(req, res, uid) {
   try {
     let token = req.cookies.login;
-    let uid = jwt.verify(token, jwtkey).payload
+    let uid = jwt.verify(token, jwtkey).payload;
     let id = uid;
     let user = await userModel.findById(id);
 
     if (user) {
-      return res.json(user)
+      return res.json(user);
     } else {
       return res.json({
-        message: 'user not found'
-      })
+        message: "user not found",
+      });
     }
   } catch (err) {
     res.json({
-      message: err
-    })
+      message: err,
+    });
   }
 }
 
 export async function patchContribution(req, res) {
   try {
-    let id = req.params.id
-    let dataTbu = req.body
-    let updatedUser = await userModel.findByIdAndUpdate(
-      id,
-      {
-        $push: {
-          "contributions": {
-            sketchId: dataTbu.sketchId,
-            sketchName: dataTbu.sketchName,
-            color: dataTbu.color
-          }
-        }
-      }
-    )
+    let id = req.params.id;
+    let dataTbu = req.body;
+    let updatedUser = await userModel.findByIdAndUpdate(id, {
+      $push: {
+        contributions: {
+          sketchId: dataTbu.sketchId,
+          sketchName: dataTbu.sketchName,
+          color: dataTbu.color,
+        },
+      },
+    });
 
     if (updatedUser) {
       res.json({
         message: "Contribution added",
-        updatedUser
-      })
+        updatedUser,
+      });
     } else {
       res.json({
-        message: "User not found"
-      })
+        message: "User not found",
+      });
     }
-
   } catch (err) {
     res.json({
-      message: err.message
-    })
+      message: err.message,
+    });
   }
 }
 
@@ -140,12 +134,12 @@ export function protectRoute(req, res, next) {
       next();
     } else {
       return res.json({
-        message: "user not verified"
-      })
+        message: "user not verified",
+      });
     }
   } else {
     return res.json({
-      message: "operation not allowed"
-    })
+      message: "operation not allowed",
+    });
   }
 }
